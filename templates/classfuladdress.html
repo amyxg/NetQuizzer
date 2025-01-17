@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetQuizzer</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/jpeg">
+    <!-- links for reference -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+</head>
+<body>
+    <!-- header for page -->
+    <header>
+        <div class="header">
+            <div class="header-container">
+                <div class="left-bar">
+                    <div class="logo">
+                        <a href="{{ url_for('main') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo"></a>
+                    </div>
+                    <nav>
+                        <ul>
+                            <li><a href="{{url_for('binary_to_decimal')}}">Binary to Decimal</a></li>
+                            <li><a href="{{url_for('decimal_to_binary')}}">Decimal to Binary</a></li>
+                            <li><a href="{{url_for('classful_quiz')}}">Classful Address Analysis</a></li>
+                            <li><a href="{{url_for('subnet_quiz_route')}}">Wildcard Mask Practice</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- main body elements -->
+    <main>
+        <div class="main-container">
+            <section class="first section">
+                <div class="image">
+                    <img src="{{ url_for('static', filename='images/ax_trojan.png') }}" alt="ax trojan">
+                </div>
+                <div class="text">
+                    <h1>Address Analysis</h1>
+                    <div class="userValue">
+                        <form method="POST">
+                            <p>{{question}}</p>
+                             <!-- Loop through the answers -->
+                            {% for key, correct_answer in answers.items() %}
+                            <div class="question-container">
+                                <div class="question-row">
+                                    <label class="question-text">{{ key }}: </label>
+                                     <!-- exception handling for user's inputs -->
+                                    <input 
+                                        type="{% if key == 'Native Address Class' or key == 'Leading Bit Pattern' %}number{% else %}text{% endif %}"
+                                        name="{{ key }}"
+                                        {% if key == "Native Address Class" %}
+                                            placeholder="Enter an integer (0-255)"
+                                            min="0"
+                                            max="255"
+                                        {% elif key == "Leading Bit Pattern" %}
+                                            placeholder="Enter an integer"
+                                        {% elif key == "Native Address Map" %}
+                                            placeholder="Format: xxx.xxx.H.H"
+                                        {% elif key == "Subnet Mask (SNM)" or key == "Wildcard Mask (WCM)" %}
+                                            placeholder="Format: xxx.xxx.xxx.xxx"
+                                        {% endif %}
+                                        required
+                                    >
+                                </div>
+                                {% if results %}
+                                    {% for result in results %}
+                                        {% if result.question == key %}
+                                            <div class="result-row">
+                                                {% if result.correct %}
+                                                    <span style="color: #086555;">✓ Correct</span>
+                                                {% else %}
+                                                    <span style="color: #D81B60;">✗ Incorrect</span>
+                                                    {% if result.validation_error %}
+                                                        <span style="color: #D81B60;">Invalid format. Please check input requirements.</span>
+                                                    {% endif %}
+                                                    <span>(Correct Answer: {{ result.correct_answer }})</span>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+
+                            {% if not results %}
+                            <div class="button-group">
+                                <button class="submitBtn" type="submit">Check All</button>
+                                <form method="GET" action="{{ url_for('main') }}">
+                                    <button type="submit" class="homeBtn">Return Home</button>
+                                </form>
+                            </div>
+                            {% else %}
+                                <div class="alignBtns">
+                                    <form method="GET"> 
+                                        <button class="submitBtn" style="color: white;"><a  href="{{ url_for('classful_quiz') }}">New Challenge</a></button>
+                                    </form>
+                                    <form method="GET" action="{{ url_for('main') }}">
+                                        <button type="submit" class="homeBtn">Return Home</button>
+                                    </form>
+                                </div>
+                        {% endif %}
+                        </form>    
+                    </div>
+        </div>
+    </main>
+</body>
+</html>
+
+
