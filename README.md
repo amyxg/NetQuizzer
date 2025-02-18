@@ -1,11 +1,11 @@
-# Flask Binary Conversion and Networking Quiz Application
+# NetQuizzer
 
 ## Overview
 This Flask app helps users practice:
 1. **Decimal-to-Binary Conversion**
 2. **Binary-to-Decimal Conversion**
-3. **Classful Address Analysis**
-4. **Subnet Quiz**
+3. **Address Analysis**
+4. **Address Map & Masks**
 
 Each module allows up to 3 attempts per question, with results stored in CSV files.
 
@@ -16,11 +16,7 @@ Each module allows up to 3 attempts per question, with results stored in CSV fil
 ### Prerequisites
 - **Python Packages**: Install Flask and pandas:
   ```bash
-  python3 -m pip install --upgrade pip
-  sudo apt-get update
-  sudo apt-get install python3-dev python3-pip python3-setuptools libgtk-3-dev webkit2gtk-4.0-dev
-  pip install --no-cache-dir pywebview
-  pip install flask pandas webview
+  pip install flask pandas 
 
 ### Ensure these files exist:
     -app.py
